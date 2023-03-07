@@ -19,9 +19,9 @@ class Square : public Square
   public:
   Square(){}
   ~Square(){}
-  long ToString(){};
-  long getArea(){return side * side;}
-  long getPerimeter(){return side * 4;}
+  long ToString(){}
+  long getArea(){}
+  long getPerimeter(){}
 
   private:
 };
@@ -31,10 +31,10 @@ class Point
   public:
   Point(){}
   ~Point(){}
-  Point operator==(Point x, Point y);
-  Point operator!=(Point x,Point y);
-  ostream &operator>>( ostream &flux, Point const& point);
-  ostream &operator<<( ostream &flux, Point const& point);
+  Point operator==(Point x, Point y){}
+  Point operator!=(Point x,Point y){}
+  ostream &operator>>( ostream &flux, Point const& point){}
+  ostream &operator<<( ostream &flux, Point const& point){}
 
 };
 
