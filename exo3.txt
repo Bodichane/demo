@@ -1,0 +1,119 @@
+Задание 3
+Реализовать задание 4.3 из прошлого семестра в ООП стиле.
+Создать решение (Solution), которое минимально содержит три проекта (Projects): исполняемый (Console Application), библиотеку классов (Library), и модульные тесты (Tests). Разработать библиотеку классов по заданному варианту. Важно! Библиотека классов не должна зависеть от потоков ввода-вывода. Каждый класс необходимо размещать в отдельных двух файлах, снабжённых «говорящим именем» и специальными расширениями: *.h для заголовочных файлов (Header), содержащих API класса, и *.cpp для компилируемых (Source), содержащих реализацию класса. В запускаемом проекте требуется создать файл main.cpp, содержащий точку входа в демонстрационную программу – главную функцию (main). В рамках данной функции показать работу с массивом.
+Создать класс Matrix (двумерный массив) (можно использовать std::vector<T>). Реализовать все конструкторы, создаваемые компилятором по умолчанию, реализовать деструктор. Предусмотреть методы вывода в строку содержимого массива. Переопределить операторы присваивания, сдвига влево и сдвига вправо. Переопределить оператор разыменования элемента коллекции по индексу.
+Предусмотреть заполнение массива по определенному алгоритму (случайным образом, вводом с клавиатуры, заполнение нулями и константным значением) реализовать через класс Generator, конкретный алгоритм реализовать в классе наследнике.
+Generator.h
+#pragma once
+
+namespace miit::algebra
+{
+	/**
+	* \brief
+	*/
+	class Generator
+	{
+		public:
+			/**
+			* \brief
+			*/
+			virtual ~Generator() = 0 {};
+
+			/**
+			* \brief
+			*/
+			virtual int generate() = 0;
+	};
+}
+RandomGenerator.h
+#pragma once
+
+#include "Generator.h"
+#include <random>
+
+namespace miit::algebra
+{
+	/**
+	* \brief
+	*/
+	class RandomGenerator : public Generator
+	{
+		private:
+			std::uniform_int_distribution<int> distribution;
+			std::mt19937 generator;
+
+		public:
+			/**
+			* \brief
+			* \param min
+			* \param max
+			*/
+			RandomGenerator(const int min, const int max);
+
+			/**
+			* \brief
+			*/
+			int generate() override;
+	};
+}
+RandomGenerator.cpp
+#include "RandomGenerator.h"
+
+miit::algebra::RandomGenerator::RandomGenerator(const int min, const int max)
+{
+	this->generator = std::mt19937(std::random_device{}());
+	this->distribution = std::uniform_int_distribution<int>(min, max);
+}
+
+int miit::algebra::RandomGenerator::generate()
+{
+	return this->distribution(this->generator);
+}
+
+
+
+
+IStreamGenerator.h
+#pragma once
+
+#include "Generator.h"
+#include <iostream>
+
+namespace miit::algebra
+{
+	/**
+	* \brief
+	*/
+	class IStreamGenerator : public Generator
+	{
+		private:
+			std::istream& in;
+
+		public:
+			/**
+			* \brief
+			* \param in
+			*/
+			IStreamGenerator(std::istream& in = std::cin);
+
+			/**
+			* \brief
+			*/
+			int generate() override;
+	};
+}
+IStreamGenerator.cpp
+#include "IStreamGenerator.h"
+
+miit::algebra::IStreamGenerator::IStreamGenerator(std::istream& in)
+	: in{in}
+{
+}
+
+int miit::algebra::IStreamGenerator::generate()
+{
+	int value = 0;
+	this->in >> value;
+	return value;
+}
+Само задание реализовать через класс Exercise, который агрегирует класс Matrix, класс Generator и чисто виртуальные методы Task1() и Task2(). Сами задания реализовать в классах наследниках. 
